@@ -7,7 +7,6 @@ import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
 import com.petshop.petshop_api.model.RoleName;
 import com.petshop.petshop_api.model.Roles;
 import com.petshop.petshop_api.model.Tutor;
-import com.petshop.petshop_api.repository.AnimalRepository;
 import com.petshop.petshop_api.repository.RolesRepository;
 import com.petshop.petshop_api.repository.TutorRepository;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ import static org.mockito.Mockito.when;
 class CreatServiceTest {
 
     @InjectMocks
-    private CreatService creatService;
+    private CreateService creatService;
 
     @Mock
     private PasswordEncoder passwordEncoder;

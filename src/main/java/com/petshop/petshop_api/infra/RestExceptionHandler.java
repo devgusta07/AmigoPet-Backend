@@ -6,9 +6,13 @@ import com.petshop.petshop_api.exception.RecursoJaExistenteException;
 import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
@@ -43,6 +47,61 @@ public class RestExceptionHandler {
         var restError = new RestError(HttpStatus.UNAUTHORIZED, e.getMessage());
 
         return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(restError);
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<RestError> argumentoInvalido(MethodArgumentTypeMismatchException e) {
+
+        var restError = new RestError(
+                HttpStatus.BAD_REQUEST,
+                "Parâmetro inválido: " + e.getName()
+        );
+
+        return ResponseEntity.badRequest().body(restError);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<RestError> corpoInvalido(HttpMessageNotReadableException e) {
+
+        var restError = new RestError(
+                HttpStatus.BAD_REQUEST,
+                "Corpo da requisição inválido. Verifique os campos e formatos enviados."
+        );
+
+        return ResponseEntity.badRequest().body(restError);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<RestError> argumentoNaoValidado(MethodArgumentNotValidException e) {
+
+        var restError = new RestError(
+                HttpStatus.BAD_REQUEST,
+                "Um ou mais campos possuem valores inválidos."
+        );
+
+        return ResponseEntity.badRequest().body(restError);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<RestError> parametroAusente(MissingServletRequestParameterException e) {
+
+        var restError = new RestError(
+                HttpStatus.BAD_REQUEST,
+                "Parâmetro obrigatório ausente: " + e.getParameterName()
+        );
+
+        return ResponseEntity.badRequest().body(restError);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestError> erroInterno(Exception e) {
+
+        var restError = new RestError(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Ocorreu um erro interno no servidor."
+        );
+
+        return ResponseEntity.internalServerError().body(restError);
     }
 
 }

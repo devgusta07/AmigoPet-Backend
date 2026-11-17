@@ -31,7 +31,7 @@ public class AnimalController {
 
     @GetMapping("/buscarAnimal")
     public ResponseEntity<AnimalResponseDTO> buscarAnimal(
-            @RequestBody String nome, @AuthenticationPrincipal Jwt jwt){
+            @RequestParam String nome, @AuthenticationPrincipal Jwt jwt){
 
         Integer id_Tutor = Integer.parseInt(jwt.getSubject());
 
@@ -39,7 +39,7 @@ public class AnimalController {
 
     }
 
-    @DeleteMapping("/removerAnimal/{id}")
+    @DeleteMapping("/removerAnimal/{id_animal}")
     public ResponseEntity<Void> removerAnimal(
             @PathVariable Integer id_animal, @AuthenticationPrincipal Jwt jwt){
 
@@ -50,7 +50,7 @@ public class AnimalController {
          return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/update/{id_animal}")
     public ResponseEntity<AnimalResponseDTO> updateAnimal(
             @PathVariable Integer id_animal,
             @AuthenticationPrincipal Jwt jwt,

@@ -10,6 +10,7 @@ import com.petshop.petshop_api.repository.AgendamentoRepository;
 import com.petshop.petshop_api.repository.AnimalRepository;
 import com.petshop.petshop_api.repository.TutorRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class TutorService {
     }
 
 
+    @Transactional
     public void removerPorCpf(String cpf) {
 
         Tutor tutorEncontrado = tutorRepository.findByCpf(cpf)

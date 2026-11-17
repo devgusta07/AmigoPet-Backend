@@ -48,10 +48,10 @@ public class SecurityConfig {
                 oauth2.jwt(jwt ->
                         jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/creat", "/loguin", "/swagger-ui/**",
+                        auth.requestMatchers("/creat", "/login", "/swagger-ui/**",
                                 "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/").hasAnyRole("USER", "ADMIN")
-                                .requestMatchers("/").hasRole("ADMIN")
+                                .requestMatchers("/agendamento/**", "/animais**").hasAnyRole("USER", "ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
         return http.build();

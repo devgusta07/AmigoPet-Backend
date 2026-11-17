@@ -6,7 +6,6 @@ import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
 import com.petshop.petshop_api.model.Tutor;
 import com.petshop.petshop_api.repository.TutorRepository;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestTemplate;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -27,7 +26,7 @@ import static org.mockito.Mockito.when;
 class LoguinServiceTest {
 
     @InjectMocks
-    private LoguinService loguinService;
+    private LoginService loguinService;
 
     @Mock
     private PasswordEncoder passwordEncoder;

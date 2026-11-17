@@ -24,7 +24,7 @@ public class AdminController {
     }
 
 
-    @GetMapping("/buscarPorCpf/{cpf}")
+    @GetMapping("/buscarTutorPorCpf/{cpf}")
     public ResponseEntity<TutorResponseDTO> buscarTutorPorId(
             @PathVariable String cpf){
 
@@ -58,7 +58,7 @@ public class AdminController {
         return ResponseEntity.ok(agendamentoService.agendamentosAdmin(cpf));
     }
 
-    @PutMapping("/update/{cpf}/{id}")
+    @PutMapping("/updateAgendamento/{cpf}/{id}")
     public ResponseEntity<AgendamentoResponseDTO> update(@PathVariable String cpf,
                                                          @PathVariable Integer id,
                                                          @RequestBody AgendamentoRequestDTO dto){
@@ -67,7 +67,7 @@ public class AdminController {
 
     }
 
-    @DeleteMapping("/remover/{id}/{cpf}")
+    @DeleteMapping("/removerAgendamento/{id}/{cpf}")
     public ResponseEntity<Void> remover(@PathVariable Integer id,
                                         @PathVariable String cpf){
 

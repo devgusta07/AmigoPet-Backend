@@ -55,7 +55,7 @@ public class AgendamentoController {
 
     }
 
-    @DeleteMapping("/removerAgendamento/{id}")
+    @DeleteMapping("/removerAgendamento/{idAgendamento}")
     public ResponseEntity<Void> removerAgendamento(
             @PathVariable Integer idAgendamento,
         @AuthenticationPrincipal Jwt jwt){

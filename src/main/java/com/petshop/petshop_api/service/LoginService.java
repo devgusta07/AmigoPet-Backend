@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 @Service
-public class LoguinService {
+public class LoginService {
 
     private final PasswordEncoder passwordEncoder;
     private final TutorRepository tutorRepository;
     private final JwtEncoder jwtEncoder;
 
-    public LoguinService(PasswordEncoder passwordEncoder, TutorRepository tutorRepository, JwtEncoder jwtEncoder) {
+    public LoginService(PasswordEncoder passwordEncoder, TutorRepository tutorRepository, JwtEncoder jwtEncoder) {
         this.passwordEncoder = passwordEncoder;
         this.tutorRepository = tutorRepository;
         this.jwtEncoder = jwtEncoder;

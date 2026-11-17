@@ -9,18 +9,17 @@ import com.petshop.petshop_api.model.Roles;
 import com.petshop.petshop_api.model.Tutor;
 import com.petshop.petshop_api.repository.RolesRepository;
 import com.petshop.petshop_api.repository.TutorRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CreatService {
+public class CreateService {
 
     private final PasswordEncoder passwordEncoder;
     private final TutorRepository tutorRepository;
     private final RolesRepository rolesRepository;
 
-    public CreatService(PasswordEncoder passwordEncoder, TutorRepository tutorRepository, RolesRepository rolesRepository) {
+    public CreateService(PasswordEncoder passwordEncoder, TutorRepository tutorRepository, RolesRepository rolesRepository) {
         this.passwordEncoder = passwordEncoder;
         this.tutorRepository = tutorRepository;
         this.rolesRepository = rolesRepository;
