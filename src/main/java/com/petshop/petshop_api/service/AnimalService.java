@@ -2,12 +2,16 @@ package com.petshop.petshop_api.service;
 
 import com.petshop.petshop_api.dto.request.animal.AnimalRequestDTO;
 import com.petshop.petshop_api.dto.response.animal.AnimalResponseDTO;
+import com.petshop.petshop_api.dto.response.animal.AnimalTutorResponseDTO;
 import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
 import com.petshop.petshop_api.model.Animal;
 import com.petshop.petshop_api.model.Tutor;
 import com.petshop.petshop_api.repository.AnimalRepository;
 import com.petshop.petshop_api.repository.TutorRepository;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
+
+import java.util.List;
 
 @Service
 public class AnimalService {
@@ -38,6 +42,7 @@ public class AnimalService {
         animalRepository.save(animal);
 
         return new AnimalResponseDTO(
+                animal.getId(),
                 animal.getNome(),
                 animal.getRaca(),
                 animal.getPeso()
@@ -54,6 +59,7 @@ public class AnimalService {
                         ));
 
         return new AnimalResponseDTO(
+                animalEncontrado.getId(),
                 animalEncontrado.getNome(),
                 animalEncontrado.getRaca(),
                 animalEncontrado.getPeso()
@@ -91,10 +97,29 @@ public class AnimalService {
         animalRepository.save(animalExistente);
 
         return new AnimalResponseDTO(
+                animalExistente.getId(),
                 animalExistente.getNome(),
                 animalExistente.getRaca(),
                 animalExistente.getPeso()
         );
     }
 
+    public List<AnimalTutorResponseDTO> animaisVinculadosATutor( Integer idTutor) {
+
+        Tutor tutorEncontrado = tutorRepository.findById(idTutor)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Tutor não encontrado!, cpf incorreto! "
+                ));
+
+        List<Animal> vinculados = tutorEncontrado.getAnimals();
+
+        return vinculados.stream()
+                .map(animal -> new AnimalTutorResponseDTO(
+                        animal.getId(),
+                        animal.getNome(),
+                        animal.getRaca(),
+                        animal.getPeso()
+                ))
+                .toList();
+    }
 }

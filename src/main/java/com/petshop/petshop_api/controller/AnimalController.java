@@ -2,6 +2,7 @@ package com.petshop.petshop_api.controller;
 
 import com.petshop.petshop_api.dto.request.animal.AnimalRequestDTO;
 import com.petshop.petshop_api.dto.response.animal.AnimalResponseDTO;
+import com.petshop.petshop_api.dto.response.animal.AnimalTutorResponseDTO;
 import com.petshop.petshop_api.service.AnimalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/animais")
@@ -54,12 +57,20 @@ public class AnimalController {
     public ResponseEntity<AnimalResponseDTO> updateAnimal(
             @PathVariable Integer id_animal,
             @AuthenticationPrincipal Jwt jwt,
-            @RequestBody AnimalRequestDTO updateAnimal){
+            @Valid @RequestBody AnimalRequestDTO updateAnimal){
 
         Integer id_Tutor = Integer.parseInt(jwt.getSubject());
 
         return ResponseEntity.ok(animalService.updateAnimal(id_animal, id_Tutor, updateAnimal));
 
+    }
+
+    @GetMapping("/MeusAnimais")
+    private ResponseEntity<List<AnimalTutorResponseDTO>> meusAnimais(@AuthenticationPrincipal Jwt jwt){
+
+        Integer id_Tutor = Integer.parseInt(jwt.getSubject());
+
+        return ResponseEntity.ok(animalService.animaisVinculadosATutor(id_Tutor));
     }
 
 }

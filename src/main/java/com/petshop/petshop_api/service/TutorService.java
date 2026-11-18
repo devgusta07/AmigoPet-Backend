@@ -1,5 +1,6 @@
 package com.petshop.petshop_api.service;
 
+import com.petshop.petshop_api.dto.request.tutor.TutorPerfilRequest;
 import com.petshop.petshop_api.dto.response.animal.AnimalTutorResponseDTO;
 import com.petshop.petshop_api.dto.response.tutor.TutorResponseDTO;
 import com.petshop.petshop_api.exception.RecursoEmUsoException;
@@ -80,10 +81,47 @@ public class TutorService {
 
        return vinculados.stream()
                .map(animal -> new AnimalTutorResponseDTO(
+                       animal.getId(),
                        animal.getNome(),
                        animal.getRaca(),
                        animal.getPeso()
                ))
                .toList();
+    }
+
+    public TutorResponseDTO meuPerfil(Integer idTutor) {
+
+        Tutor tutor = tutorRepository.findById(idTutor)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Tutor não existente"
+                ));
+
+        return new TutorResponseDTO(
+                tutor.getNome(),
+                tutor.getContato(),
+                tutor.getEndereco(),
+                tutor.getCpf()
+        );
+    }
+
+    public TutorResponseDTO updatePerfil(Integer idTutor, TutorPerfilRequest request){
+
+        Tutor tutor = tutorRepository.findById(idTutor)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Tutor não existente"
+                ));
+
+        tutor.setNome(request.nome());
+        tutor.setContato(request.contato());
+        tutor.setEndereco(request.endereco());
+
+        tutorRepository.save(tutor);
+
+        return new TutorResponseDTO(
+                tutor.getNome(),
+                tutor.getContato(),
+                tutor.getEndereco(),
+                tutor.getCpf()
+        );
     }
 }
