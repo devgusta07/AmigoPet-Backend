@@ -13,5 +13,7 @@ public interface TutorRepository extends JpaRepository<Tutor, Integer> {
 
     void deleteByCpf(String cpf);
 
+    boolean existsByEmail(String email);
 
+    Optional<Tutor> findByEmail(String email);
 }

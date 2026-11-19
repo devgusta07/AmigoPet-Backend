@@ -42,7 +42,7 @@ class CreatServiceTest {
     void deveCriarTutor() {
 
         TutorRequestDTO resquest = new TutorRequestDTO("Gustavo", "11945915618",
-                "Rua do calmo", "570464", "2809");
+                "Rua do calmo","gus@gmail.com", "570464", "2809");
 
         Roles role = new Roles();
         role.setName(RoleName.USER);
@@ -66,7 +66,7 @@ class CreatServiceTest {
     void deveLancarExcecaoQuandoCpfJaExiste() {
 
         TutorRequestDTO resquest = new TutorRequestDTO("Gustavo", "11945915618",
-                "Rua do calmo", "570464", "2809");
+                "Rua do calmo", "gus@gmail.com","570464", "2809");
 
 
         when(tutorRepository.existsByCpf(resquest.cpf()))
@@ -82,7 +82,7 @@ class CreatServiceTest {
     void deveLancarExcecaoQuandoRoleNaoEncontrado() {
 
         TutorRequestDTO resquest = new TutorRequestDTO("Gustavo", "11945915618",
-                "Rua do calmo", "570464", "2809");
+                "Rua do calmo", "gus@gmail.com", "570464", "2809");
 
 
         when(tutorRepository.existsByCpf(resquest.cpf()))

@@ -41,10 +41,16 @@ public class Tutor {
     @NotBlank(message = "Endereço e obrigatorio")
     private String endereco;
 
+    @Column(nullable = false)
+    @NotBlank(message = "Obrigatorio cadastro de um email")
+    private String email;
+
     @NotBlank
+    @NotBlank(message = "Cpf e obrigatorio")
     private String cpf;
 
     @NotBlank
+    @NotBlank(message = "Informe uma senha")
     private String senha;
 
     @OneToMany(mappedBy = "tutor")

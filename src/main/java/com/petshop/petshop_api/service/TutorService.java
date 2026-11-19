@@ -44,6 +44,7 @@ public class TutorService {
                 tutorEncontrado.getNome(),
                 tutorEncontrado.getContato(),
                 tutorEncontrado.getEndereco(),
+                tutorEncontrado.getEmail(),
                 tutorEncontrado.getCpf()
         );
     }
@@ -100,6 +101,7 @@ public class TutorService {
                 tutor.getNome(),
                 tutor.getContato(),
                 tutor.getEndereco(),
+                tutor.getEmail(),
                 tutor.getCpf()
         );
     }
@@ -114,6 +116,7 @@ public class TutorService {
         tutor.setNome(request.nome());
         tutor.setContato(request.contato());
         tutor.setEndereco(request.endereco());
+        tutor.setEmail(request.email());
 
         tutorRepository.save(tutor);
 
@@ -121,6 +124,7 @@ public class TutorService {
                 tutor.getNome(),
                 tutor.getContato(),
                 tutor.getEndereco(),
+                tutor.getEmail(),
                 tutor.getCpf()
         );
     }

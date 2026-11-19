@@ -37,3 +37,5 @@ build/
    #     .toList();
 
 src/main/resources/certs/private.key
+
+.env

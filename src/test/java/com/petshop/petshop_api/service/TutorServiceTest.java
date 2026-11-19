@@ -71,6 +71,7 @@ class TutorServiceTest {
                 tutor.getNome(),
                 tutor.getContato(),
                 tutor.getEndereco(),
+                tutor.getEmail(),
                 tutor.getCpf(),
                 tutor.getSenha()
         );

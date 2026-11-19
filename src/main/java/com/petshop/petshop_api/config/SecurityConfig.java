@@ -49,8 +49,8 @@ public class SecurityConfig {
                         jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/creat", "/login", "/swagger-ui/**",
-                                "/v3/api-docs/**").permitAll()
-                                .requestMatchers("/agendamento/**", "/animais**", "meuPerfil/**").hasAnyRole("USER", "ADMIN")
+                                "/v3/api-docs/**", "/recuperacao-senha/**").permitAll()
+                                .requestMatchers("/agendamento/**", "/animais/**", "/meuPerfil/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );

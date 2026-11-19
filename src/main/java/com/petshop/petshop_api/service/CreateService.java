@@ -27,7 +27,8 @@ public class CreateService {
 
     public TutorResponseDTO createTutor(TutorRequestDTO request) {
 
-        if(tutorRepository.existsByCpf(request.cpf())){
+        if(tutorRepository.existsByCpf(request.cpf()) ||
+            tutorRepository.existsByEmail(request.email())) {
 
             throw new RecursoJaExistenteException("Tutor existente!");
         }
@@ -36,6 +37,7 @@ public class CreateService {
         tutor.setNome(request.nome());
         tutor.setContato(request.contato());
         tutor.setEndereco(request.endereco());
+        tutor.setEmail(request.email());
         tutor.setCpf(request.cpf());
         tutor.setSenha(passwordEncoder.encode(request.senha()));
 
@@ -51,6 +53,7 @@ public class CreateService {
                 tutor.getNome(),
                 tutor.getContato(),
                 tutor.getEndereco(),
+                tutor.getEmail(),
                 tutor.getCpf()
         );
 
