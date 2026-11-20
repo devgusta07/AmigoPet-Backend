@@ -4,6 +4,7 @@ import com.petshop.petshop_api.exception.CredencialInvalidaException;
 import com.petshop.petshop_api.exception.RecursoEmUsoException;
 import com.petshop.petshop_api.exception.RecursoJaExistenteException;
 import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
+import com.petshop.petshop_api.exception.SenhasNaoConferemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -47,6 +48,14 @@ public class RestExceptionHandler {
         var restError = new RestError(HttpStatus.UNAUTHORIZED, e.getMessage());
 
         return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(restError);
+    }
+
+    @ExceptionHandler(SenhasNaoConferemException.class)
+    public ResponseEntity<RestError> senhasNaoConferem(SenhasNaoConferemException e) {
+
+        var restError = new RestError(HttpStatus.BAD_REQUEST, e.getMessage());
+
+        return ResponseEntity.badRequest().body(restError);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)

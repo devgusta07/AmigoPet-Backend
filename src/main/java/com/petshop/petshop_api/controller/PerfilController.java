@@ -1,6 +1,7 @@
 package com.petshop.petshop_api.controller;
 
 import com.petshop.petshop_api.dto.request.tutor.TutorPerfilRequest;
+import com.petshop.petshop_api.dto.request.tutor.AlterarSenhaRequest;
 import com.petshop.petshop_api.dto.response.tutor.TutorResponseDTO;
 import com.petshop.petshop_api.service.TutorService;
 import jakarta.validation.Valid;
@@ -35,5 +36,16 @@ public class PerfilController {
         Integer idTutor = Integer.parseInt(jwt.getSubject());
 
         return ResponseEntity.ok(tutorService.updatePerfil(idTutor, request));
+    }
+
+    @PutMapping("/alterarSenha")
+    private ResponseEntity<Void> alterarSenha(@Valid @RequestBody AlterarSenhaRequest request,
+                                              @AuthenticationPrincipal Jwt jwt) {
+
+        Integer idTutor = Integer.parseInt(jwt.getSubject());
+
+        tutorService.alterarSenha(idTutor, request);
+
+        return ResponseEntity.noContent().build();
     }
 }

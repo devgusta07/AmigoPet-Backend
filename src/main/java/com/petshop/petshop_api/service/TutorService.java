@@ -1,15 +1,19 @@
 package com.petshop.petshop_api.service;
 
 import com.petshop.petshop_api.dto.request.tutor.TutorPerfilRequest;
+import com.petshop.petshop_api.dto.request.tutor.AlterarSenhaRequest;
 import com.petshop.petshop_api.dto.response.animal.AnimalTutorResponseDTO;
 import com.petshop.petshop_api.dto.response.tutor.TutorResponseDTO;
 import com.petshop.petshop_api.exception.RecursoEmUsoException;
 import com.petshop.petshop_api.exception.RecursoNaoEncontradoException;
+import com.petshop.petshop_api.exception.CredencialInvalidaException;
+import com.petshop.petshop_api.exception.SenhasNaoConferemException;
 import com.petshop.petshop_api.model.Animal;
 import com.petshop.petshop_api.model.Tutor;
 import com.petshop.petshop_api.repository.AgendamentoRepository;
 import com.petshop.petshop_api.repository.AnimalRepository;
 import com.petshop.petshop_api.repository.TutorRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +27,16 @@ public class TutorService {
     private final TutorRepository tutorRepository;
     private final AnimalRepository animalRepository;
     private final AgendamentoRepository agendamentoRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public TutorService(TutorRepository tutorRepository,
                         AnimalRepository animalRepository,
-                        AgendamentoRepository agendamentoRepository) {
+                        AgendamentoRepository agendamentoRepository,
+                        PasswordEncoder passwordEncoder) {
         this.tutorRepository = tutorRepository;
         this.animalRepository = animalRepository;
         this.agendamentoRepository = agendamentoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -127,5 +134,24 @@ public class TutorService {
                 tutor.getEmail(),
                 tutor.getCpf()
         );
+    }
+
+    public void alterarSenha(Integer idTutor, AlterarSenhaRequest request) {
+
+        Tutor tutor = tutorRepository.findById(idTutor)
+                .orElseThrow(() -> new RecursoNaoEncontradoException(
+                        "Tutor não existente"
+                ));
+
+        if (!passwordEncoder.matches(request.senhaAtual(), tutor.getSenha())) {
+            throw new CredencialInvalidaException("Senha atual incorreta!");
+        }
+
+        if (!request.novaSenha().equals(request.confirmacaoNovaSenha())) {
+            throw new SenhasNaoConferemException("A nova senha e sua confirmação devem ser iguais!");
+        }
+
+        tutor.setSenha(passwordEncoder.encode(request.novaSenha()));
+        tutorRepository.save(tutor);
     }
 }
