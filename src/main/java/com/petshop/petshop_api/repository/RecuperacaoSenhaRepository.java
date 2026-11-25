@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface RecuperacaoSenhaRepository extends JpaRepository<RecuperacaoSenha, Integer> {
 
     Optional<RecuperacaoSenha> findByTokenHash(String token);
+
+    Optional<RecuperacaoSenha> findByTutorId(Integer tutorId);
 }

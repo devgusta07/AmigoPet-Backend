@@ -37,6 +37,7 @@ build/
    #     .toList();
 
 src/main/resources/certs/private.key
+src/main/java/com/petshop/petshop_api/config/AdminInitializer.java
 
 .env
 .env

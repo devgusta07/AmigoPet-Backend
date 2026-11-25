@@ -111,6 +111,6 @@ public class RestExceptionHandler {
         );
 
         return ResponseEntity.internalServerError().body(restError);
-    }
+   }
 
 }

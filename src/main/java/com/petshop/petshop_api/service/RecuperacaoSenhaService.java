@@ -57,9 +57,14 @@ public class RecuperacaoSenhaService {
 
     private void salvarToken(Tutor tutor, String tokenHash) {
 
-       com.petshop.petshop_api.model.RecuperacaoSenha token = new com.petshop.petshop_api.model.RecuperacaoSenha();
+       com.petshop.petshop_api.model.RecuperacaoSenha token = passwordResetTokenRepository
+               .findByTutorId(tutor.getId())
+                       .orElseGet(() -> {
+                                   var novoToken = new RecuperacaoSenha();
+                                   novoToken.setTutor(tutor);
+                                   return novoToken;
+                               });
 
-        token.setTutor(tutor);
         token.setTokenHash(tokenHash);
         token.setDataExpiracao(LocalDateTime.now().plusMinutes(30));
 
@@ -82,6 +87,8 @@ public class RecuperacaoSenhaService {
     }
 
     public void solicitarRecuperacaoPorEmail(String email) {
+
+        System.out.println("EMAIL RECEBIDO: [" + email + "]");
 
         Tutor tutor = tutorRepository.findByEmail(email)
                 .orElseThrow(() -> new RecursoNaoEncontradoException(
