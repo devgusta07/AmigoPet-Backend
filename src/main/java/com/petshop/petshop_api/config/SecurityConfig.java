@@ -2,6 +2,9 @@ package com.petshop.petshop_api.config;
 
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
+import java.security.KeyFactory;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +25,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -33,14 +38,12 @@ public class SecurityConfig {
     @Value("${jwt.public-key}")
     private RSAPublicKey publicKey;
 
-    @Value("${jwt.private-key}")
-    private RSAPrivateKey privateKey;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -48,7 +51,8 @@ public class SecurityConfig {
                 oauth2.jwt(jwt ->
                         jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/creat", "/login", "/swagger-ui/**",
+                        auth.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers("/creat", "/login", "/swagger-ui/**",
                                 "/v3/api-docs/**", "/recuperacao-senha/**").permitAll()
                                 .requestMatchers("/agendamento/**", "/animais/**", "/meuPerfil/**").hasAnyRole("USER", "ADMIN")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -56,6 +60,33 @@ public class SecurityConfig {
                 );
         return http.build();
 
+    }
+
+    private RSAPrivateKey carregarChavePrivada() throws Exception {
+
+        String chave = System.getProperty("JWT_PRIVATE_KEY");
+
+        if (chave == null) {
+            chave = System.getenv("JWT_PRIVATE_KEY");
+        }
+
+        if (chave == null || chave.isBlank()) {
+            throw new IllegalStateException("Chave privada JWT não configurada!");
+        }
+
+        String chaveLimpa = chave
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("\\s", "");
+
+
+        byte[] chaveDecodificada = Base64.getDecoder().decode(chaveLimpa);
+
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(chaveDecodificada);
+
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+        return (RSAPrivateKey) keyFactory.generatePrivate(spec);
     }
 
     @Bean
@@ -79,7 +110,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JwtEncoder jwtEncoder() {
+    public JwtEncoder jwtEncoder() throws Exception {
+
+        RSAPrivateKey privateKey = carregarChavePrivada();
 
         JWK jwk = new RSAKey.Builder(this.publicKey)
                 .privateKey(privateKey)
@@ -88,7 +121,6 @@ public class SecurityConfig {
         var jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
 
         return new NimbusJwtEncoder(jwks);
-
     }
 
     @Bean

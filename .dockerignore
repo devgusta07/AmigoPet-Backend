@@ -1,0 +1,10 @@
+
+.env
+.git
+.gitignore
+.idea
+.vscode
+target/
+*.iml
+private.key
+src/main/resources/certs/private.key

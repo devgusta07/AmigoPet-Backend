@@ -49,7 +49,7 @@ public class LoginService {
                 .subject(tutor.getId().toString())
                 .claim("roles", roles)
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(300))
+                .expiresAt(Instant.now().plusSeconds(3000))
                 .build();
 
         JwtEncoderParameters parameters = JwtEncoderParameters.from(claims);

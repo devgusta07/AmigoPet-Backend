@@ -39,3 +39,4 @@ build/
 src/main/resources/certs/private.key
 
 .env
+.env
