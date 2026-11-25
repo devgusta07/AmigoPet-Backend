@@ -1,115 +1,69 @@
-# Petshop API
+# 🐾 AmigoPet — Backend
 
-API REST baseada em um cenario de uma clínica veterinária, desenvolvida com Java e Spring Boot.
+API REST desenvolvida em Java com Spring Boot para um sistema de gerenciamento administrativo de um pet shop.
 
-O sistema permite cadastrar tutores e animais e gerenciar agendamentos de serviços veterinários.
+O AmigoPet tem como objetivo centralizar funcionalidades de gerenciamento, autenticação e controle de acesso, oferecendo diferentes permissões para usuários e administradores.
 
-## Tecnologias Utilizadas
+**API em produção:** https://amigopet-backend-uua0.onrender.com
 
-- Java
+📖 **Documentação Swagger:** https://amigopet-backend-uua0.onrender.com/swagger-ui/index.html
+
+## Tecnologias utilizadas
+
+- Java 26
 - Spring Boot
+- Spring Security
 - Spring Data JPA
+- Hibernate
+- Spring OAuth2 Resource Server
+- JWT
+- BCrypt
 - PostgreSQL
+- Maven
 - Docker
-- Lombok
-- Bean Validation
-- Swagger / OpenAPI
 
 ## Funcionalidades
 
-- Cadastro, consulta, atualização e remoção de tutores , Animais e Agendamentos
-- Associação entre tutores e animais
-- Validação dos dados recebidos pela API
-- Verificação de conflitos de horarios de agendamentos
-- Exceções personalizadas
-- Tratamento global de exceções
-- Documentação dos endpoints com Swagger
+- Cadastro e autenticação de usuários.
+- Autenticação utilizando JWT com chaves RSA.
+- Criptografia de senhas com BCrypt.
+- Controle de acesso baseado em papéis (USER e ADMIN).
+- Área administrativa com acesso restrito ao ADMIN.
+- Gerenciamento de animais (cadastro, consulta, atualização e exclusão).
+- Associação dos animais aos respectivos tutores.
+- Restrição de acesso para garantir que cada tutor visualize e gerencie apenas seus próprios animais.
+- Recuperação de senha por e-mail.
+- Tratamento centralizado de exceções.
+- Testes unitários dos serviços.
+- Documentação dos endpoints com Swagger.
 
-## Arquitetura
+## Segurança
 
-O projeto utiliza uma arquitetura em camadas, com separação de responsabilidades entre os pacotes:
+A aplicação utiliza Spring Security para proteger os endpoints e JWT para autenticação e autorização.
 
-```text
-controller
-service
-repository
-model
-dto
-exceptions
-infra
-```
+A autorização é baseada em papéis, diferenciando usuários comuns e administradores. Também são aplicadas regras de acesso para garantir que os tutores tenham acesso somente aos próprios registros.
 
-- `controller`: recebe as requisições HTTP e define os endpoints da API.
-- `service`: concentra as regras de negócio.
-- `repository`: responsável pelo acesso aos dados através do Spring Data JPA.
-- `model`: contém as entidades utilizadas na persistência.
-- `dto`: objetos utilizados para entrada e saída de dados da API.
-- `exceptions`: contém as exceções personalizadas e o tratamento de erros.
-- `infra`: contém configurações e componentes relacionados à infraestrutura da aplicação.
+## Arquitetura e infraestrutura
 
-## Relacionamentos
+O backend foi desenvolvido como uma API REST independente do frontend.
 
-```text
-Tutor 1 ─── N Animal
-Animal 1 ─── N Agendamento
-```
+- **Render:** hospedagem da API.
+- **Neon:** banco de dados PostgreSQL.
+- **Docker:** containerização da aplicação.
+- **GitHub:** versionamento e integração com o deploy.
 
-Um tutor pode possuir vários animais, e um animal pode possuir vários agendamentos.
+## Aplicação relacionada
 
-## Como executar
+**Frontend:** https://amigopet-frontend.vercel.app/login
 
-### Pré-requisitos
+**Repositório do frontend:** https://github.com/devgusta07/amigopet-frontend
 
-* Java 17+
-* IntelliJ IDEA (ou outra de sua preferência)
-* Docker Desktop
-* Git
+## Observações
 
-O PostgreSQL é executado através do Docker Compose. Não é necessário instalar o PostgreSQL diretamente na máquina.
+A API está publicada e pode ser explorada através da documentação Swagger.
 
-### 1. Clonar o projeto
+A execução em outro ambiente exige a configuração das variáveis de ambiente e das credenciais necessárias para conexão com o banco de dados, autenticação JWT e serviço de e-mail.
 
-```bash
-git clone https://github.com/devgusta07/petshop-api.git
-```
+---
 
-Abra a pasta clonada no IntelliJ IDEA.
-
-### 2. Iniciar o banco de dados
-
-Certifique-se de que o Docker Desktop esteja em execução.
-
-Abra o terminal integrado do IntelliJ IDEA usando `Alt + F12` e execute:
-
-```bash
-docker compose up -d
-```
-
-O comando irá criar e iniciar o container do PostgreSQL configurado no projeto.
-
-### 3. Executar a aplicação
-
-A aplicação pode ser executada diretamente pelo IntelliJ IDEA através da classe `PetshopApiApplication`.
-
-### 4. Acessar o Swagger
-
-Com a aplicação em execução:
-
-```text
-http://localhost:8080/swagger-ui/index.html
-```
-
-O Swagger permite visualizar e testar os endpoints disponíveis na API.
-
-## Estrutura do projeto
-
-```text
-src/main/java/com/petshop/petshop_api
-├── controller
-├── service
-├── repository
-├── model
-├── dto
-├── exceptions
-└── infra
-```
+Desenvolvido como projeto de portfólio, com foco em desenvolvimento backend Java, segurança, persistência de dados e integração entre aplicações.
