@@ -54,7 +54,7 @@ O backend foi desenvolvido como uma API REST independente do frontend.
 
 ## Aplicação relacionada
 
-**Frontend:** https://amigopet-frontend.vercel.app/login
+**Frontend:** https://amigopet-frontend.vercel.app/
 
 **Repositório do frontend:** https://github.com/devgusta07/amigopet-frontend
 
